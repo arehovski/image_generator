@@ -63,13 +63,11 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'image_scraper.pipelines.ImageScraperPipeline': 300,
-    'scrapy.pipelines.images.ImagesPipeline': 1
+    'image_scraper.pipelines.ImageScraperPipeline': 300,
+    'image_scraper.pipelines.ImageGeneratorPipeline': 400
 }
-# def set_images_store(name):
-#     return f'F:\\images\\{name}'
-#
-# IMAGES_STORE = set_images_store()
+
+IMAGES_STORE = 'F:\\images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
