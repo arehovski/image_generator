@@ -21,7 +21,7 @@ class ImageScraperPipeline(ImagesPipeline):
 
     def file_path(self, request: Request, response=None, info=None, *, item=None):
         folder = request.meta['folder']
-        image_store = os.path.join(IMAGES_STORE, folder)
+        image_store = os.path.join(IMAGES_STORE, folder, 'sub')
         if not os.path.exists(image_store):
             os.mkdir(image_store)
         image_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
