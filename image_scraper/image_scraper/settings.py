@@ -64,7 +64,7 @@ ROBOTSTXT_OBEY = False
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'image_scraper.pipelines.ImageScraperPipeline': 300,
-    'image_scraper.pipelines.ImageGeneratorPipeline': 400
+    # 'image_scraper.pipelines.ImageGeneratorPipeline': 400
 }
 
 IMAGES_STORE = 'F:\\images'

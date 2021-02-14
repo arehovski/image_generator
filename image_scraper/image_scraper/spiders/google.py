@@ -17,21 +17,30 @@ class GoogleSpider(scrapy.Spider):
         self.search_text = search_text
         options = Options()
         options.add_argument("--headless")
-        driver = webdriver.Chrome(options=options)
-        driver.get('https://google.com')
-        form = driver.find_element_by_xpath("//input[@title='Поиск']")
+        self.driver = webdriver.Chrome(options=options)
+        self.driver.get('https://google.com')
+        form = self.driver.find_element_by_xpath("//input[@title='Поиск']")
         form.send_keys(search_text)
         form.send_keys(Keys.ENTER)
-        driver.find_element_by_xpath("//a[@class='hide-focus-ring'][1]").click()
+        self.driver.find_element_by_xpath("//a[@class='hide-focus-ring'][1]").click()
         time.sleep(2)
-        # self._scroll_down(driver)
-        page = driver.page_source
-        self.response = Selector(text=page)
-        driver.close()
+        self._scroll_down(self.driver)
 
     def parse(self, response, **kwargs):
-        yield ImageScraperItem(folder=self.search_text, image_urls=self.response.xpath(
-            "//img[contains(@alt, 'Картинки')]"))
+        image_thumbnails = self.driver.find_elements_by_xpath(
+            "//img[contains(@class,'Q4LuWd')]")
+        for img_thumb in image_thumbnails:
+            try:
+                img_thumb.click()
+                time.sleep(0.3)
+            except Exception:
+                continue
+            full_images = self.driver.find_elements_by_xpath("//img[contains(@class,'n3VNCb')]")
+            for image in full_images:
+                source = image.get_attribute('src')
+                if source and 'http' in source:
+                    yield ImageScraperItem(folder=self.search_text, image_urls=[source])
+        self.driver.close()
 
     def _scroll_down(self, driver):
         last_height = driver.execute_script("return document.documentElement.scrollHeight")

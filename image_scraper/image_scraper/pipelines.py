@@ -16,8 +16,8 @@ from image_scraper.settings import IMAGES_STORE
 
 class ImageScraperPipeline(ImagesPipeline):
     def get_media_requests(self, item, info):
-        yield [Request(url.xpath('.//@src').get(),
-                       meta={'folder': item['folder']}) for url in item['image_urls']]
+        for url in item['image_urls']:
+            yield Request(url, meta={'folder': item['folder']})
 
     def file_path(self, request: Request, response=None, info=None, *, item=None):
         folder = request.meta['folder']
@@ -25,7 +25,7 @@ class ImageScraperPipeline(ImagesPipeline):
         if not os.path.exists(image_store):
             os.mkdir(image_store)
         image_guid = hashlib.sha1(to_bytes(request.url)).hexdigest()
-        return os.path.join(image_store, image_guid)
+        return os.path.join(image_store, image_guid) + '.jpg'
 
 
 class ImageGeneratorPipeline:

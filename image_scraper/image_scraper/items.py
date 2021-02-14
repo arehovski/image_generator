@@ -7,5 +7,5 @@ import scrapy
 
 
 class ImageScraperItem(scrapy.Item):
-    folder = scrapy.Field()
     image_urls = scrapy.Field()
+    folder = scrapy.Field()
