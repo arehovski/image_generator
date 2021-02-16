@@ -4,3 +4,4 @@ venv/
 */__pycache__/
 *.pyc
 image_scraper/chromedriver.exe
+/models
